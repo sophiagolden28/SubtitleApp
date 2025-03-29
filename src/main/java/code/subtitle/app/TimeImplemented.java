@@ -79,6 +79,9 @@ public class TimeImplemented implements Time {
     
         //in this we do some dividing and set all the time vars to their respective values in MS
         
+        //so the way this works is that it sets everything to 0 again and then builds up from there rather than
+        //catching if it's negative and then setting it backwards - here we just build it up.
+        
         hour = 0;
         minute = 0;
         second = 0;

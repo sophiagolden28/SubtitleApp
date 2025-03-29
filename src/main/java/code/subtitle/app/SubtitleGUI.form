@@ -250,6 +250,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="tfStartTime">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfStartTimeActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
                   <Properties>
@@ -382,6 +385,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="tfSubtitleText">
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tfSubtitleTextActionPerformed"/>
+                  </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel8">
                   <Properties>
@@ -569,6 +575,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="TextFieldRemoveText">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextFieldRemoveTextActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="ButtonRemoveSubtitle">
               <Properties>
@@ -787,6 +796,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="TextFieldMillisecondsToShift">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="TextFieldMillisecondsToShiftActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel16">
               <Properties>

@@ -133,6 +133,12 @@ public class SubtitleGUI extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Find by Start Time"));
 
+        tfStartTime.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfStartTimeActionPerformed(evt);
+            }
+        });
+
         jLabel2.setText("Start Time");
 
         btnFindSubtitleByStartTime.setText("Find Subtitle");
@@ -215,6 +221,12 @@ public class SubtitleGUI extends javax.swing.JFrame {
         );
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Find by Subtitle Text"));
+
+        tfSubtitleText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfSubtitleTextActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Subtitle Text");
 
@@ -350,6 +362,12 @@ public class SubtitleGUI extends javax.swing.JFrame {
         jLabel9.setText("Remove Subtitle by Text");
 
         jLabel10.setText("Subtitle Text");
+
+        TextFieldRemoveText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextFieldRemoveTextActionPerformed(evt);
+            }
+        });
 
         ButtonRemoveSubtitle.setText("Remove Subtitle");
         ButtonRemoveSubtitle.addActionListener(new java.awt.event.ActionListener() {
@@ -509,6 +527,12 @@ public class SubtitleGUI extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel15.setText("Shift all Subtitles by ");
+
+        TextFieldMillisecondsToShift.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TextFieldMillisecondsToShiftActionPerformed(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel16.setText("milliseconds");
@@ -878,9 +902,9 @@ public class SubtitleGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonCutActionPerformed
 
     private void ButtonShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonShiftActionPerformed
-        
+
         int offset = Integer.parseInt(TextFieldMillisecondsToShift.getText());
-        
+
         subtitleSeq.shift(offset);
 
         //redraw
@@ -897,6 +921,83 @@ public class SubtitleGUI extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_ButtonShiftActionPerformed
+
+    private void TextFieldMillisecondsToShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextFieldMillisecondsToShiftActionPerformed
+
+        //hitting enter does the same thing as hitting the shift button
+        int offset = Integer.parseInt(TextFieldMillisecondsToShift.getText());
+
+        subtitleSeq.shift(offset);
+
+        //redraw
+        List<Subtitle> subtitles = subtitleSeq.getSubtitles();
+
+        //clear the table
+        model.setRowCount(0);
+
+        // Add rows to the table model from the ArrayList
+        for (Subtitle subtitle : subtitles) {
+            String[] row = {Utils.convertTime(subtitle.getStartTime()), Utils.convertTime(subtitle.getEndTime()), subtitle.getText()};
+            model.addRow(row);
+        }
+
+
+    }//GEN-LAST:event_TextFieldMillisecondsToShiftActionPerformed
+
+    private void tfSubtitleTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfSubtitleTextActionPerformed
+
+        //this does the same thing as hitting the find button
+        String subtitleText = tfSubtitleText.getText();
+
+        List<Subtitle> subtitles = subtitleSeq.getSubtitles(subtitleText);
+
+        //clear the table
+        model.setRowCount(0);
+
+        // Add rows to the table model from the ArrayList
+        for (Subtitle subtitle : subtitles) {
+            String[] row = {Utils.convertTime(subtitle.getStartTime()), Utils.convertTime(subtitle.getEndTime()), subtitle.getText()};
+            model.addRow(row);
+        }
+    }//GEN-LAST:event_tfSubtitleTextActionPerformed
+
+    private void TextFieldRemoveTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TextFieldRemoveTextActionPerformed
+
+        //this does the same as the remove button
+        //remove based on the given string
+        subtitleSeq.remove(TextFieldRemoveText.getText());
+
+        List<Subtitle> subtitles = subtitleSeq.getSubtitles();
+
+        //clear the table
+        model.setRowCount(0);
+
+        // Add rows to the table model from the ArrayList
+        for (Subtitle subtitle : subtitles) {
+            String[] row = {Utils.convertTime(subtitle.getStartTime()), Utils.convertTime(subtitle.getEndTime()), subtitle.getText()};
+            model.addRow(row);
+        }
+    }//GEN-LAST:event_TextFieldRemoveTextActionPerformed
+
+    private void tfStartTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfStartTimeActionPerformed
+        
+        //this does the same as the button
+        
+        String startTime = tfStartTime.getText();
+
+        Subtitle subtitle = subtitleSeq.getSubtitle(Utils.convertTime(startTime));
+        if (subtitle == null) {
+            JOptionPane.showMessageDialog(rootPane, "Subtitle not found", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } else {
+            //clear the table
+            model.setRowCount(0);
+            String[] row = {Utils.convertTime(subtitle.getStartTime()), Utils.convertTime(subtitle.getEndTime()), subtitle.getText()};
+            model.addRow(row);
+            jTable1.setModel(model);
+//            System.out.println(subtitle.getText());
+        }
+
+    }//GEN-LAST:event_tfStartTimeActionPerformed
 
     /**
      * @param args the command line arguments
