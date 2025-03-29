@@ -74,5 +74,52 @@ public class TimeImplemented implements Time {
         return totalMS;
 
     }
+    
+    public void setTimeInMS(int totalMS){
+    
+        //in this we do some dividing and set all the time vars to their respective values in MS
+        
+        hour = 0;
+        minute = 0;
+        second = 0;
+        millisecond = 0;
+    
+        //if the total is larger than one hour
+        if (totalMS >= 3.6e+6) {
+            
+            //hour gets larger based on how many hours there are
+            hour += totalMS / 3.6e+6;
+            
+            //then subtract hour-many-milliseconds from totalMS
+            totalMS -= hour * 3.6e+6;
+            
+        }
+        
+        //if the total is larger than one minute
+        if (totalMS >= 60000) {
+            
+            //minute gets larger based on how many hours there are
+            minute += totalMS / 60000;
+            
+            //then subtract minute-many-milliseconds from totalMS
+            totalMS -= minute * 60000;
+            
+        }
+    
+        //if the total is larger than one second
+        if (totalMS >= 1000) {
+            
+            //second gets larger based on how many hours there are
+            second += totalMS / 1000;
+            
+            //then subtract second-many-milliseconds from totalMS
+            totalMS -= second * 1000;
+            
+        }
+        
+        //then we give the rese of totalMS to milliseconds
+        millisecond += totalMS;
+        
+    }
 
 }

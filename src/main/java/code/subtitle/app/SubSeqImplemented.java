@@ -131,21 +131,28 @@ public class SubSeqImplemented implements SubtitleSeq {
         //the leftovers are in ms.
         //if the offset is less than 0:
         if (offset < 0) {
-            //loop through the subtitles and if the offset + the time would be 0 or less we take out the subtitle
+
+            //ok again with this instead of looping over a list while modifying it (resulting in an error)
+            //we have to create a new list with everything EXCEPT what we want to take out (basically inverting it)
+            ArrayList<Subtitle> copySubtitleList = new ArrayList<>();
+
             for (Subtitle subtitle : subtitleList) {
 
-                Time updatedTime = new TimeImplemented();
-                updatedTime.setMS(updatedTime.getMS() + offset);
+                //shift
+                ((TimeImplemented) subtitle.getStartTime()).setTimeInMS(((TimeImplemented) subtitle.getStartTime()).getTimeInMS() + offset);
+                ((TimeImplemented) subtitle.getEndTime()).setTimeInMS(((TimeImplemented) subtitle.getEndTime()).getTimeInMS() + offset);
 
-                subtitle.setStartTime(updatedTime);
+                //so if it's NOT less than 0 we add it back to a list
+                if (!(((TimeImplemented) ((SubtitleImplemented) subtitle).getStartTime()).getTimeInMS() <= 0 || ((TimeImplemented) ((SubtitleImplemented) subtitle).getEndTime()).getTimeInMS() <= 0)) {
 
-                if (((TimeImplemented) ((SubtitleImplemented) subtitle).getStartTime()).getTimeInMS() <= 0 || ((TimeImplemented) ((SubtitleImplemented) subtitle).getEndTime()).getTimeInMS() <= 0) {
-
-                    subtitleList.remove(subtitle);
+                    copySubtitleList.add(subtitle);
 
                 }
 
             }
+
+            //then set subtitle list to the new copy list without the 0-time subtitles
+            subtitleList = copySubtitleList;
 
         } else {
             //if it's not, take all the subtitles in a loop and add the offset to the start and end times depending
@@ -153,15 +160,15 @@ public class SubSeqImplemented implements SubtitleSeq {
 
             for (Subtitle subtitle : subtitleList) {
 
-                //this only works if offset is under 1000, add if-elses to catch
-                Time updatedTime = new TimeImplemented();
+                //can we update the time in milliseconds all at once???????
+                //yah instead do this: use a setMilliseconds function that sets the hour, minute, etc while dividing it etc. and
+                //set the total milliseconds to the existing total milliseconds + the offset
+                ((TimeImplemented) subtitle.getStartTime()).setTimeInMS(((TimeImplemented) subtitle.getStartTime()).getTimeInMS() + offset);
+                ((TimeImplemented) subtitle.getEndTime()).setTimeInMS(((TimeImplemented) subtitle.getEndTime()).getTimeInMS() + offset);
 
-                updatedTime.setMS(subtitle.getStartTime().getMS() + offset);
-                subtitle.setStartTime(updatedTime);
-
-                updatedTime.setMS(subtitle.getEndTime().getMS() + offset);
-                subtitle.setEndTime(updatedTime);
-
+//                this only works if offset is under 1000, add if-elses to catch
+//                subtitle.getStartTime().setMS(subtitle.getStartTime().getMS() + offset);
+//                subtitle.getEndTime().setMS(subtitle.getEndTime().getMS() + offset);
             }
 
         }

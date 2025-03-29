@@ -514,6 +514,11 @@ public class SubtitleGUI extends javax.swing.JFrame {
         jLabel16.setText("milliseconds");
 
         ButtonShift.setText("Shift");
+        ButtonShift.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonShiftActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -871,6 +876,27 @@ public class SubtitleGUI extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_ButtonCutActionPerformed
+
+    private void ButtonShiftActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonShiftActionPerformed
+        
+        int offset = Integer.parseInt(TextFieldMillisecondsToShift.getText());
+        
+        subtitleSeq.shift(offset);
+
+        //redraw
+        List<Subtitle> subtitles = subtitleSeq.getSubtitles();
+
+        //clear the table
+        model.setRowCount(0);
+
+        // Add rows to the table model from the ArrayList
+        for (Subtitle subtitle : subtitles) {
+            String[] row = {Utils.convertTime(subtitle.getStartTime()), Utils.convertTime(subtitle.getEndTime()), subtitle.getText()};
+            model.addRow(row);
+        }
+
+
+    }//GEN-LAST:event_ButtonShiftActionPerformed
 
     /**
      * @param args the command line arguments
